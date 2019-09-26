@@ -15,8 +15,8 @@ class CreateTvShowsTable extends Migration
     {
         Schema::create('tv_shows', function (Blueprint $table) {
             $table->smallIncrements('id');
-			$table->string('title');
 			$table->string('imdb_identifier');
+			$table->string('title');
             $table->timestamps();
         });
     }
