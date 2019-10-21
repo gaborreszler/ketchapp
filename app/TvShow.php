@@ -10,4 +10,15 @@ class TvShow extends Model
 	{
 		return $this->hasMany('App\Season');
     }
+
+	public function users()
+	{
+		return $this->belongsToMany('App\User', 'tv_show_users')
+					->withPivot('watching');
+    }
+
+	public function tvShowUsers()
+	{
+		return $this->hasMany('App\TvShowUser');
+    }
 }

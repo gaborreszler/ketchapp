@@ -36,4 +36,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+	public function tvShows()
+	{
+		return $this->belongsToMany('App\TvShow', 'tv_show_users')
+					->withPivot('watching');
+    }
+
+	public function tvShowUsers()
+	{
+		return $this->hasMany('App\TvShowUser');
+    }
 }
