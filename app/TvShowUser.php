@@ -15,4 +15,9 @@ class TvShowUser extends Model
 	{
 		return $this->belongsTo('App\TvShow');
     }
+
+	public function tvShowUserSeasons()
+	{
+		return $this->hasMany('App\TvShowUserSeason');
+    }
 }
