@@ -15,4 +15,9 @@ class Episode extends Model
 	{
 		return $this->hasMany('App\TvShowUserSeasonEpisode');
     }
+
+	public function episodeImages()
+	{
+		return $this->hasMany('App\EpisodeImage');
+    }
 }
