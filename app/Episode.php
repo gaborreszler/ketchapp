@@ -87,4 +87,61 @@ class Episode extends Model
 			$tvShowUserSeasonEpisode->save();
 		}
     }
+
+	public static function synchronize()
+	{
+		$episodes = Episode::all();
+
+		//dump(date('Y-m-d H:i:s'));
+		foreach ($episodes as $episode) {
+			$tmdbEpisode = $episode->getTmdbEpisode();
+
+			if (!isset($tmdbEpisode->status_code) || $tmdbEpisode->status_code !== 34) {
+				$mismatch = false;
+
+				if ($episode->title !== $tmdbEpisode->name) {
+					$mismatch = true;
+					$episode->title = $tmdbEpisode->name;
+				}
+				if ($episode->air_date != $tmdbEpisode->air_date) {
+					$mismatch = true;
+					$episode->air_date = $tmdbEpisode->air_date;
+				}
+
+				if ($mismatch)
+					$episode->save();
+
+				if (count($episode->episodeImages) === 0 && $tmdbEpisode->still_path !== null)
+					$episode->createEpisodeImage($tmdbEpisode->still_path, true);
+			}
+		}
+		//dump(date('Y-m-d H:i:s'));
+    }
+
+	public function getTmdbEpisode()
+	{
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.themoviedb.org/3/tv/" . $this->season->tvShow->tmdb_identifier . "/season/" . $this->season->season_number . "/episode/" . $this->episode_number . "?language=en-US&api_key=" . config('app.TMDb_key'),
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_POSTFIELDS => "{}",
+		));
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+
+		curl_close($curl);
+
+		if ($err) {
+			echo "cURL Error #:" . $err;
+		}
+
+		return json_decode($response);
+    }
 }

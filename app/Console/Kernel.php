@@ -24,6 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('episode:synchronize')
+				 ->dailyAt('01:30');
+
         $schedule->command('season:import')
 				 ->dailyAt('03:00');
 		$schedule->command('episode:import')
