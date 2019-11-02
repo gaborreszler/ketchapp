@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('season:import')
 				 ->dailyAt('03:00');
+		$schedule->command('episode:import')
+				 ->dailyAt('03:05');
     }
 
     /**
