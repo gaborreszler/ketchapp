@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Libraries\Tmdb;
 use Illuminate\Database\Eloquent\Model;
 
 class TvShow extends Model
@@ -65,27 +66,13 @@ class TvShow extends Model
 
 	public function getTmdbTvShow()
 	{
-		$curl = curl_init();
+		$tmdb = new Tmdb(config('app.TMDb_key'));
+		$result = $tmdb->request([
+			"tv" => $this->tmdb_identifier
+		]);
 
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => "https://api.themoviedb.org/3/tv/" . $this->tmdb_identifier . "?language=en-US&api_key=" . config('app.TMDb_key'),
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => "GET",
-			CURLOPT_POSTFIELDS => "{}",
-		));
-
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-
-		curl_close($curl);
-
-		if ($err) {
-			echo "cURL Error #:" . $err;
-		}
+		return $result;
+    }
 
 		return json_decode($response);
     }
