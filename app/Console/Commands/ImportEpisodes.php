@@ -39,6 +39,6 @@ class ImportEpisodes extends Command
     public function handle()
     {
     	Episode::import();
-    	return;
+    	exit;
     }
 }

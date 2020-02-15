@@ -39,6 +39,6 @@ class ImportSeasons extends Command
     public function handle()
     {
     	Season::import();
-    	return;
+    	exit;
     }
 }
