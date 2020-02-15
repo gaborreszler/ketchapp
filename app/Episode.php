@@ -69,13 +69,22 @@ class Episode extends Model
 		return;
     }
 
-	public function createEpisodeImage($file_path, $primary = false)
+	public function createEpisodeImage($file_path, $primary = false, $swap_primary = null, $size = "original")
 	{
 		$episodeImage = new EpisodeImage();
 		$episodeImage->episode_id = $this->id;
 		$episodeImage->primary = $primary ? true : false;
+
+		if ($primary && $swap_primary) {
+			$swap_primary->primary = 0;
+			$swap_primary->update();
+		}
+
+		$episodeImage->size = $size;
 		$episodeImage->file_path = $file_path;
 		$episodeImage->save();
+
+		$episodeImage->storeFile();
     }
 
 	public function createTvShowUserSeasonEpisodes()
