@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\DumpDatabase',
+		'App\Console\Commands\ImportEpisodes',
+		'App\Console\Commands\ImportSeasons',
+		'App\Console\Commands\SynchronizeEpisodes',
     ];
 
     /**
