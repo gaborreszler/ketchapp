@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\DumpDatabase',
     ];
 
     /**
@@ -24,6 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('db:dump')
+				 ->mondays()
+				 ->at('02:59');
+
         $schedule->command('episode:synchronize')
 				 ->dailyAt('01:30');
 
