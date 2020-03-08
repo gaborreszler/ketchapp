@@ -25,6 +25,17 @@ class TvShow extends Model
 		self::STATUS_ENDED => 'Ended'
 	];
 
+	const STATUS_AND_BOOTSTRAP_COLOR_RELATIONS = [
+		self::STATUS_UNKNOWN => 'secondary',
+		self::STATUS_PLANNED => 'secondary',
+		self::STATUS_IN_PRODUCTION => 'info',
+		self::STATUS_PILOT => 'primary',
+		self::STATUS_RETURNING => 'success',
+		self::STATUS_CANCELED => 'danger',
+		self::STATUS_ENDED => 'danger'
+	];
+
+
 
 	public function seasons()
 	{
@@ -57,6 +68,11 @@ class TvShow extends Model
 	public function getStatus()
 	{
 		return self::STATUS_RELATIONS[$this->status];
+	}
+
+	public function getStatusColor()
+	{
+		return self::STATUS_AND_BOOTSTRAP_COLOR_RELATIONS[$this->status];
 	}
 
 	public function isReturning()
