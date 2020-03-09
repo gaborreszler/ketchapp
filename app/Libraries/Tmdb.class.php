@@ -4,6 +4,8 @@ namespace App\Libraries;
 class Tmdb {
 
 	const ENDPOINT_FIND = "/find";
+	const ENDPOINT_NETWORK = "/network";
+	const ENDPOINT_IMAGES = "/images";
 	const ENDPOINT_TV = "/tv";
 	const ENDPOINT_SEASON = "/season";
 	const ENDPOINT_EPISODE = "/episode";
@@ -11,6 +13,8 @@ class Tmdb {
 
 	const ENDPOINT_KEYS = [
 		self::ENDPOINT_FIND => "find",
+		self::ENDPOINT_NETWORK => "network",
+		self::ENDPOINT_IMAGES => "images",
 		self::ENDPOINT_TV => "tv",
 		self::ENDPOINT_SEASON => "season",
 		self::ENDPOINT_EPISODE => "episode",

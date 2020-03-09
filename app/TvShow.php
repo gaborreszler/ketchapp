@@ -36,6 +36,10 @@ class TvShow extends Model
 	];
 
 
+	public function networks()
+	{
+		return $this->belongsToMany('App\Network', 'network_tv_shows');
+	}
 
 	public function seasons()
 	{
