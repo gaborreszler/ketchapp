@@ -11,6 +11,26 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
 	/**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
+    {
+    	$user = null;
+
+    	try {
+			$user = User::findOrFail($id);
+		} catch (ModelNotFoundException $e) {
+    		$model = lcfirst(substr(strrchr($e->getModel(), '\\'), 1));
+    		abort(404, sprintf("This %s does not exist", $model));
+		}
+
+		return view('users.show', ['user' => $user]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
