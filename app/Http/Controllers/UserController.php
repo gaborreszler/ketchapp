@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -28,5 +30,39 @@ class UserController extends Controller
 		if ($id != Auth::id()) abort(403);
 
 		return view('users.edit', ['user' => $user]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, int $id)
+    {
+    	$user = null;
+
+		try {
+			$user = User::findOrFail($id);
+		} catch (ModelNotFoundException $e) {
+			$model = lcfirst(substr(strrchr($e->getModel(), '\\'), 1));
+			abort(404, sprintf("This %s does not exist", $model));
+		}
+
+		if ($id != Auth::id()) abort(403);
+
+		$validator = Validator::make($request->input(), [
+			'reminded_daily' => 'required|boolean',
+			'reminded_weekly' => 'required|boolean',
+			'reminded_monthly' => 'required|boolean',
+		]);
+
+		if ($validator->fails())
+			return redirect()->route('users.edit', ['user' => Auth::id()])->withErrors($validator);
+
+		$user->update($request->input());
+
+		return redirect()->route('users.show', ['user' => Auth::id()])->with('success', 'Changes have been saved.');
     }
 }
