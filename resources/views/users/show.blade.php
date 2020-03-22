@@ -45,7 +45,7 @@
 							</dd>
 						</dl>
 
-						<a href="{{ route('users.edit', ['user' => Auth::id()]) }}" class="btn btn-warning" role="button">
+						<a href="{{ route('users.edit', ['user' => $user->id]) }}" class="btn btn-warning" role="button">
 							Account settings & preferences
 						</a>
 					</div>

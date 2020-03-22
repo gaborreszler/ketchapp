@@ -18,7 +18,7 @@
 							</div>
 						@endif
 
-						<form method="POST" action="{{ route('users.update', ['user' => Auth::id()]) }}">
+						<form method="POST" action="{{ route('users.update', ['user' => $user->id]) }}">
 							@method('PUT')
 							@csrf
 							<div class="form-group">
