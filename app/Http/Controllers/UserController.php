@@ -73,6 +73,7 @@ class UserController extends Controller
 		if ($id != Auth::id()) abort(403);
 
 		$validator = Validator::make($request->input(), [
+			/*'timezone' => 'required|timezone',*/
 			'reminded_daily' => 'required|boolean',
 			'reminded_weekly' => 'required|boolean',
 			'reminded_monthly' => 'required|boolean',

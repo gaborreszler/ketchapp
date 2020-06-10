@@ -21,6 +21,22 @@
 						<form method="POST" action="{{ route('users.update', ['user' => $user->id]) }}">
 							@method('PUT')
 							@csrf
+							{{--<div class="form-group">
+								<div class="form-row">
+									<label class="col-md-8" for="preferred-timezone">
+										{{ ucfirst(__("preferred timezone")) }}
+										<small id="timezoneHelp" class="form-text text-muted">{{ ucfirst(__("placeholder")) }}</small>
+									</label>
+									<select name="timezone" id="preferred-timezone" class="form-control col-md-4" aria-describedby="timezoneHelp">
+										@foreach (timezone_identifiers_list() as $timezone)
+											<option value="{{ $timezone }}"{{ $timezone == $user->timezone ? ' selected' : '' }}>{{ str_replace("_", " ", $timezone) }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+
+							<hr>--}}
+
 							<div class="form-group">
 								<div class="form-row">
 									<div class="col-form-label col-md-8 pt-0">
