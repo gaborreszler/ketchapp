@@ -47,4 +47,13 @@ class User extends Authenticatable
 	{
 		return $this->hasMany('App\TvShowUser');
     }
+
+	public function shouldBeReminded($interval)
+	{
+		if ($interval == "daily" && $this->reminded_daily)		return true;
+		if ($interval == "weekly" && $this->reminded_weekly)	return true;
+		if ($interval == "monthly" && $this->reminded_monthly)	return true;
+
+		return false;
+    }
 }
