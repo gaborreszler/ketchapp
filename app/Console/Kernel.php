@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\DumpDatabase',
 		'App\Console\Commands\ImportEpisodes',
 		'App\Console\Commands\ImportSeasons',
+		'App\Console\Commands\SendReminders',
 		'App\Console\Commands\SynchronizeEpisodes',
     ];
 
@@ -38,6 +39,14 @@ class Kernel extends ConsoleKernel
 				 ->dailyAt('03:00');
 		$schedule->command('episode:import')
 				 ->dailyAt('03:05');
+
+        $schedule->command('reminder:send daily')
+				 ->dailyAt('18:00');
+		$schedule->command('reminder:send weekly')
+				 ->sundays()
+				 ->at('20:00');
+		$schedule->command('reminder:send monthly')
+				 ->monthlyOn(date('t'), '22:00');
     }
 
     /**
