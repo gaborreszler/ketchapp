@@ -86,4 +86,28 @@ class UserController extends Controller
 
 		return redirect()->route('users.show', ['user' => Auth::id()])->with('success', 'Changes have been saved.');
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(int $id)
+    {
+		$user = null;
+
+		try {
+			$user = User::findOrFail($id);
+		} catch (ModelNotFoundException $e) {
+			$model = lcfirst(substr(strrchr($e->getModel(), '\\'), 1));
+			abort(404, __(sprintf("This %s does not exist", $model)));
+		}
+
+		if ($id != Auth::id()) abort(403);
+
+		$user->delete();//todo:consider soft deleting
+
+		return redirect()->route('index')->with('success', 'Account has been deleted.');
+    }
 }

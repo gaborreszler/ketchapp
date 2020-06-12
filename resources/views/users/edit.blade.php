@@ -65,6 +65,12 @@
 
 							<button type="submit" class="btn btn-primary float-right">Save</button>
 						</form>
+
+						<form method="POST" action="{{ route('users.destroy', ['user' => $user->id]) }}">
+							@method('DELETE')
+							@csrf
+							<button type="submit" class="btn btn-danger float-left">Delete account</button>
+						</form>
 					</div>
 				</div>
 			</div>

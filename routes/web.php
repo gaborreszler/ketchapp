@@ -18,6 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('users', 'UserController')->only([
-	'show', 'edit', 'update'
-]);
+Route::resource('users', 'UserController')->except([
+	'index', 'create', 'store'
+])->middleware('auth');
