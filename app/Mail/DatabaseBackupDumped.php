@@ -33,7 +33,7 @@ class DatabaseBackupDumped extends Mailable
 
         return $this->from(config('mail.from.address'), $app_name)
 					->subject($app_name . ' backup')
-					->view('emails.backup')
+					->markdown('emails.backup')
 					->with(['filename' => $this->filename])
 					->attachFromStorage($this->filename);
     }
