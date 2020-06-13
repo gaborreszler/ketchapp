@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTvShowUserSeasonsTable extends Migration
+class CreateSeasonUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,18 @@ class CreateTvShowUserSeasonsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tv_show_user_seasons', function (Blueprint $table) {
+        Schema::create('season_users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('tv_show_user_id');
-            $table->unsignedMediumInteger('season_id');
+			$table->unsignedBigInteger('user_id');
+			$table->unsignedMediumInteger('season_id');
+			$table->unsignedBigInteger('tv_show_user_id');
             $table->boolean('following')->nullable(false)->default(true);
             $table->timestamps();
 
-			$table->unique(['tv_show_user_id', 'season_id'], 'tv_show_user_seasons_tsu_id_season_id_unique');
-			$table->foreign('tv_show_user_id')->references('id')->on('tv_show_users')->onDelete('restrict');
+			$table->unique(['user_id', 'season_id', 'tv_show_user_id'], 'season_users_user_id_season_id_tv_show_user_id_unique');
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->foreign('season_id')->references('id')->on('seasons')->onDelete('restrict');
+			$table->foreign('tv_show_user_id')->references('id')->on('tv_show_users')->onDelete('restrict');
         });
     }
 
@@ -33,6 +35,6 @@ class CreateTvShowUserSeasonsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tv_show_user_seasons');
+        Schema::dropIfExists('season_users');
     }
 }

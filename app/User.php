@@ -48,6 +48,28 @@ class User extends Authenticatable
 		return $this->hasMany('App\TvShowUser');
     }
 
+	public function seasons()
+	{
+		return $this->belongsToMany('App\Season', 'season_users')
+					->withPivot('following');
+	}
+
+	public function seasonUsers()
+	{
+		return $this->hasMany('App\SeasonUser');
+	}
+
+	public function episodes()
+	{
+		return $this->belongsToMany('App\Episode', 'episode_users')
+					->withPivot('seen');
+	}
+
+	public function episodeUsers()
+	{
+		return $this->hasMany('App\EpisodeUser');
+	}
+
 	public function shouldBeReminded($interval)
 	{
 		if ($interval == "daily" && $this->reminded_daily)		return true;

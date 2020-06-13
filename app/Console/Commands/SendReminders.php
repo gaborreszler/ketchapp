@@ -83,15 +83,15 @@ class SendReminders extends Command
 
     	$array = [];
     	foreach ($episodes as $episode)
-    		foreach ($episode->tvShowUserSeasonEpisodes as $tvShowUserSeasonEpisode)
+    		foreach ($episode->episodeUsers as $episodeUser)
     			if (
-					$tvShowUserSeasonEpisode->tvShowUserSeason->tvShowUser->user->shouldBeReminded($interval)
+					$episodeUser->seasonUser->tvShowUser->user->shouldBeReminded($interval)
 					&&
-    				!$tvShowUserSeasonEpisode->seen
+    				!$episodeUser->seen
 					&&
-					$tvShowUserSeasonEpisode->tvShowUserSeason->following
+					$episodeUser->seasonUser->following
 					&&
-					($tvShowUser = $tvShowUserSeasonEpisode->tvShowUserSeason->tvShowUser)->watching
+					($tvShowUser = $episodeUser->seasonUser->tvShowUser)->watching
 				)
 					$array[$tvShowUser->user_id][$tvShowUser->tv_show_id][] = $episode->id;
 

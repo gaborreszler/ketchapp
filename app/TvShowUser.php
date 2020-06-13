@@ -16,8 +16,8 @@ class TvShowUser extends Model
 		return $this->belongsTo('App\TvShow');
     }
 
-	public function tvShowUserSeasons()
+	public function seasonUsers()
 	{
-		return $this->hasMany('App\TvShowUserSeason');
+		return $this->hasMany('App\SeasonUser');
     }
 }

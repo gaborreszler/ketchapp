@@ -13,9 +13,15 @@ class Episode extends Model
 		return $this->belongsTo('App\Season');
     }
 
-	public function tvShowUserSeasonEpisodes()
+	public function users()
 	{
-		return $this->hasMany('App\TvShowUserSeasonEpisode');
+		return $this->belongsToMany('App\User', 'episode_users')
+					->withPivot('seen');
+    }
+
+	public function episodeUsers()
+	{
+		return $this->hasMany('App\EpisodeUser');
     }
 
 	public function episodeImages()
@@ -60,7 +66,7 @@ class Episode extends Model
 					if ($tmdbEpisode->still_path !== null)
 						$episode->createEpisodeImage($tmdbEpisode->still_path, true);
 
-					$episode->createTvShowUserSeasonEpisodes();
+					$episode->createEpisodeUsers();
 				}
 			}
 		}
@@ -88,13 +94,14 @@ class Episode extends Model
 		$episodeImage->storeFile();
     }
 
-	public function createTvShowUserSeasonEpisodes()
+	public function createEpisodeUsers()
 	{
-		foreach ($this->season->tvShowUserSeasons as $tvShowUserSeason) {
-			$tvShowUserSeasonEpisode = new TvShowUserSeasonEpisode();
-			$tvShowUserSeasonEpisode->tv_show_user_season_id = $tvShowUserSeason->id;
-			$tvShowUserSeasonEpisode->episode_id = $this->id;
-			$tvShowUserSeasonEpisode->save();
+		foreach ($this->season->seasonUsers as $seasonUser) {
+			$episodeUser = new EpisodeUser();
+			$episodeUser->user_id = $seasonUser->user_id;
+			$episodeUser->episode_id = $this->id;
+			$episodeUser->season_user_id = $seasonUser->id;
+			$episodeUser->save();
 		}
     }
 

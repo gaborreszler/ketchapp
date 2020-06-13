@@ -20,8 +20,8 @@ class CreateTvShowUsersTable extends Migration
 			$table->boolean('watching')->nullable(false)->default(true);
             $table->timestamps();
 
-			$table->unique(['user_id', 'tv_show_id'], 'tv_show_users_user_id_ts_id_unique');
-			$table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+			$table->unique(['user_id', 'tv_show_id'], 'tv_show_users_user_id_tv_show_id_unique');
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->foreign('tv_show_id')->references('id')->on('tv_shows')->onDelete('restrict');
         });
     }

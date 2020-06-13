@@ -18,9 +18,15 @@ class Season extends Model
 		return $this->hasMany('App\Episode');
     }
 
-	public function tvShowUserSeasons()
+	public function users()
 	{
-		return $this->hasMany('App\TvShowUserSeason');
+		return $this->belongsToMany('App\User', 'season_users')
+					->withPivot('following');
+    }
+
+	public function seasonUsers()
+	{
+		return $this->hasMany('App\SeasonUser');
     }
 
 	public static function import(TvShow $tvShow = null)
@@ -55,7 +61,7 @@ class Season extends Model
 
 					//$number_of_new_seasons++;
 
-					$season->createTvShowUserSeasons();
+					$season->createSeasonUsers();
 				}
 			}
 		}
@@ -65,13 +71,14 @@ class Season extends Model
 		return;
     }
 
-	public function createTvShowUserSeasons()
+	public function createSeasonUsers()
 	{
 		foreach ($this->tvShow->tvShowUsers as $tvShowUser) {
-			$tvShowUserSeason = new TvShowUserSeason();
-			$tvShowUserSeason->tv_show_user_id = $tvShowUser->id;
-			$tvShowUserSeason->season_id = $this->id;
-			$tvShowUserSeason->save();
+			$seasonUser = new SeasonUser();
+			$seasonUser->user_id = $tvShowUser->user_id;
+			$seasonUser->season_id = $this->id;
+			$seasonUser->tv_show_user_id = $tvShowUser->id;
+			$seasonUser->save();
 		}
     }
 

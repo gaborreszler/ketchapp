@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TvShowUserSeasonEpisode extends Model
+class EpisodeUser extends Model
 {
-	public function tvShowUserSeason()
+	public function seasonUser()
 	{
-		return $this->belongsTo('App\TvShowUserSeason');
+		return $this->belongsTo('App\SeasonUser');
     }
 
 	public function episode()
