@@ -145,6 +145,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+		'reminded_daily' => 'daily reminders',
+		'reminded_weekly' => 'weekly reminders',
+		'reminded_monthly' => 'monthly reminders',
+	],
 
 ];
