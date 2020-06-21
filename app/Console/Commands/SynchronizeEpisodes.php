@@ -3,10 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Episode;
+use App\Jobs\SynchronizeEpisode;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class SynchronizeEpisodes extends Command
 {
+	use DispatchesJobs;
+
     /**
      * The name and signature of the console command.
      *
@@ -38,7 +42,10 @@ class SynchronizeEpisodes extends Command
      */
     public function handle()
     {
-        Episode::synchronize();
-        return;
+    	foreach (Episode::all() as $episode) {
+    		$job = new SynchronizeEpisode($episode);
+    		$this->dispatch($job);
+		}
+    	exit;
     }
 }

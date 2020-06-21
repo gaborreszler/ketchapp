@@ -105,36 +105,6 @@ class Episode extends Model
 		}
     }
 
-	public static function synchronize()
-	{
-		$episodes = Episode::all();
-
-		//dump(date('Y-m-d H:i:s'));
-		foreach ($episodes as $episode) {
-			$tmdbEpisode = $episode->getTmdbEpisode();
-
-			if (!isset($tmdbEpisode->status_code) || $tmdbEpisode->status_code !== 34) {
-				$mismatch = false;
-
-				if ($episode->title !== $tmdbEpisode->name) {
-					$mismatch = true;
-					$episode->title = $tmdbEpisode->name;
-				}
-				if ($episode->air_date != $tmdbEpisode->air_date) {
-					$mismatch = true;
-					$episode->air_date = $tmdbEpisode->air_date;
-				}
-
-				if ($mismatch)
-					$episode->save();
-
-				if (count($episode->episodeImages) === 0 && $tmdbEpisode->still_path !== null)
-					$episode->createEpisodeImage($tmdbEpisode->still_path, true);
-			}
-		}
-		//dump(date('Y-m-d H:i:s'));
-    }
-
 	public function getTmdbEpisode()
 	{
 		$tmdb = new Tmdb(config('app.TMDb_key'));
