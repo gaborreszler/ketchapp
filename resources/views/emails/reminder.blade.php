@@ -9,6 +9,6 @@ here's your {{ $interval }} reminder about your TV shows' episodes aired {{ $int
 @endforeach
 @endforeach
 
-Enjoy your TV shows,<br>
+Have fun,<br>
 {{ config('app.name') }}
 @endcomponent
