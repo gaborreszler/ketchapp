@@ -27,7 +27,7 @@ class EpisodeImage extends Model
 
 	public function storeFile($size = "original")
 	{
-		$path = 'episode-images'. DIRECTORY_SEPARATOR . $this->episode->season->tvShow->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->season->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->tmdb_identifier . DIRECTORY_SEPARATOR . $size;
+		$path = 'episode-images' . DIRECTORY_SEPARATOR . $this->episode->season->tvShow->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->season->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->tmdb_identifier . DIRECTORY_SEPARATOR . $size;
 
 		$public_disk = Storage::disk('public');
 		$file = $path . $this->file_path;
