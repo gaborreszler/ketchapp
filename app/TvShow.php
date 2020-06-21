@@ -35,6 +35,10 @@ class TvShow extends Model
 		self::STATUS_ENDED => 'danger'
 	];
 
+	public function tvShowImages()
+	{
+		return $this->hasMany('App\TvShowImage');
+	}
 
 	public function networks()
 	{
@@ -72,6 +76,25 @@ class TvShow extends Model
 	public function getStatus()
 	{
 		return self::STATUS_RELATIONS[$this->status];
+	}
+
+	public function createTvShowImage($file_path, $view, $primary = false, $swap_primary = null, $size = "original")
+	{
+		$tvShowImage = new TvShowImage();
+		$tvShowImage->tv_show_id = $this->id;
+		$tvShowImage->view = $view;
+		$tvShowImage->primary = $primary ? true : false;
+
+		if ($primary && $swap_primary) {
+			$swap_primary->primary = 0;
+			$swap_primary->update();
+		}
+
+		$tvShowImage->size = $size;
+		$tvShowImage->file_path = $file_path;
+		$tvShowImage->save();
+
+		$tvShowImage->storeFile($view);
 	}
 
 	public function getStatusColor()
