@@ -93,7 +93,4 @@ class TvShow extends Model
 
 		return $result;
     }
-
-		return json_decode($response);
-    }
 }
