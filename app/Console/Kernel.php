@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
 		'App\Console\Commands\ImportSeasons',
 		'App\Console\Commands\SendReminders',
 		'App\Console\Commands\SynchronizeEpisodes',
+		'App\Console\Commands\SynchronizeTvShows',
     ];
 
     /**
@@ -32,6 +33,8 @@ class Kernel extends ConsoleKernel
 				 ->mondays()
 				 ->at('02:59');
 
+		$schedule->command('tv-show:synchronize')
+				 ->dailyAt('01:25');
         $schedule->command('episode:synchronize')
 				 ->dailyAt('01:30');
 
