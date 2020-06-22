@@ -9,6 +9,8 @@ class TvShowImage extends Model
 {
 	protected static $base_url = 'https://image.tmdb.org/t/p';
 
+	protected $fillable = ['primary'];
+
 	public function tvShow()
 	{
 		return $this->belongsTo('App\TvShow');

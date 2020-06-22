@@ -80,19 +80,15 @@ class TvShow extends Model
 
 	public function createTvShowImage($file_path, $view, $primary = false, $swap_primary = null, $size = "original")
 	{
-		$tvShowImage = new TvShowImage();
-		$tvShowImage->tv_show_id = $this->id;
-		$tvShowImage->view = $view;
-		$tvShowImage->primary = $primary ? true : false;
-
 		if ($primary && $swap_primary) {
 			$swap_primary->primary = 0;
 			$swap_primary->update();
 		}
 
-		$tvShowImage->size = $size;
-		$tvShowImage->file_path = $file_path;
-		$tvShowImage->save();
+		$tvShowImage = TvShowImage::updateOrCreate(
+			['tv_show_id' => $this->id, 'view' => $view, 'size' => $size, 'file_path' => $file_path],
+			['primary' => $primary ? true : false]
+		);
 
 		$tvShowImage->storeFile($view);
 	}
