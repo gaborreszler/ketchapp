@@ -50,6 +50,8 @@ class Kernel extends ConsoleKernel
 				 ->at('20:00');
 		$schedule->command('reminder:send monthly')
 				 ->monthlyOn(date('t'), '22:00');
+
+		$schedule->command('horizon:snapshot')->everyFifteenMinutes();
     }
 
     /**
