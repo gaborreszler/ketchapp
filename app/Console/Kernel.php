@@ -30,18 +30,18 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('db:dump')
-				 ->mondays()
-				 ->at('02:59');
+				 ->sundays()
+				 ->at('23:59');
 
 		$schedule->command('tv-show:synchronize')
-				 ->dailyAt('01:25');
+				 ->dailyAt('12:00');
         $schedule->command('episode:synchronize')
-				 ->dailyAt('01:30');
+				 ->dailyAt('12:05');
 
         $schedule->command('season:import')
-				 ->dailyAt('03:00');
+				 ->dailyAt('00:00');
 		$schedule->command('episode:import')
-				 ->dailyAt('03:05');
+				 ->dailyAt('00:05');
 
         $schedule->command('reminder:send daily')
 				 ->dailyAt('18:00');
