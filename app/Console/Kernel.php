@@ -36,7 +36,12 @@ class Kernel extends ConsoleKernel
 		$schedule->command('tv-show:synchronize')
 				 ->dailyAt('12:00');
         $schedule->command('episode:synchronize')
-				 ->dailyAt('12:05');
+				 ->dailyAt('12:05')
+				 ->skip(function() {
+					 return date('l') === "Sunday";
+				 });
+		$schedule->command('episode:synchronize --all')
+				 ->weeklyOn(7, '12:05');
 
         $schedule->command('season:import')
 				 ->dailyAt('00:00');

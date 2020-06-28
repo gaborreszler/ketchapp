@@ -16,7 +16,7 @@ class SynchronizeEpisodes extends Command
      *
      * @var string
      */
-    protected $signature = 'episode:synchronize';
+    protected $signature = 'episode:synchronize {--all}';
 
     /**
      * The console command description.
@@ -42,7 +42,10 @@ class SynchronizeEpisodes extends Command
      */
     public function handle()
     {
-    	foreach (Episode::all() as $episode) {
+    	$episodes = $this->option('all')	? Episode::all()
+												: Episode::where('updated_at', '>=', date('Y-m-d', strtotime('-3 months')))->get();
+
+    	foreach ($episodes as $episode) {
     		$job = new SynchronizeEpisode($episode);
     		$this->dispatch($job);
 		}
