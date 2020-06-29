@@ -23,7 +23,7 @@ class ImportEpisodes extends Command
      *
      * @var string
      */
-    protected $description = "Imports episodes from TMDb which do not exist in Ketchapp's database.";
+    protected $description = "Imports episodes from TMDb which do not exist in the database.";
 
     /**
      * Create a new command instance.

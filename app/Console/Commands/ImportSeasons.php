@@ -23,7 +23,7 @@ class ImportSeasons extends Command
      *
      * @var string
      */
-    protected $description = "Imports seasons from TMDb which do not exist in Ketchapp's database.";
+    protected $description = "Imports seasons from TMDb which do not exist in the database.";
 
     /**
      * Create a new command instance.

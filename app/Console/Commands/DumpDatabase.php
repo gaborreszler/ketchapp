@@ -22,7 +22,7 @@ class DumpDatabase extends Command
      *
      * @var string
      */
-    protected $description = "Creates a backup of Ketchapp's database.";
+    protected $description = "Creates a backup of the database.";
 
     protected $filename, $process;
 
