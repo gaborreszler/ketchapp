@@ -2,11 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Episode;
+use App\Jobs\ImportEpisode;
+use App\Season;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class ImportEpisodes extends Command
 {
+	use DispatchesJobs;
+
     /**
      * The name and signature of the console command.
      *
@@ -38,7 +42,10 @@ class ImportEpisodes extends Command
      */
     public function handle()
     {
-    	Episode::import();
+		foreach (Season::all() as $season)
+			if (property_exists($tmdbSeason = $season->getTmdbSeason(), "episodes"))
+				foreach ($tmdbSeason->episodes as $tmdbEpisode)
+					$this->dispatchNow(new ImportEpisode($tmdbEpisode, $season));
     	exit;
     }
 }
