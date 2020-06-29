@@ -2,11 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Season;
+use App\Jobs\ImportSeason;
+use App\TvShow;
 use Illuminate\Console\Command;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class ImportSeasons extends Command
 {
+	use DispatchesJobs;
+
     /**
      * The name and signature of the console command.
      *
@@ -38,7 +42,9 @@ class ImportSeasons extends Command
      */
     public function handle()
     {
-    	Season::import();
+    	foreach (TvShow::all() as $tvShow)
+			foreach ($tvShow->getTmdbTvShow()->seasons as $tmdbSeason)
+				$this->dispatchNow(new ImportSeason($tmdbSeason, $tvShow));
     	exit;
     }
 }
