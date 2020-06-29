@@ -70,7 +70,7 @@ class SynchronizeTvShow implements ShouldQueue
 				$swap_primary = $old_primary && $old_primary->file_path !== $file_path ? $old_primary : null;
 			}
 
-			if (count($this->tvShow->tvShowImages) === 0 || $swap_primary)
+			if (!$old_primary || $swap_primary)
 				$this->tvShow->createTvShowImage($file_path, $view, true, $swap_primary);
 		}
     }

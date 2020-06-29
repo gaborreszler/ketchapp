@@ -9,7 +9,7 @@ class TvShowImage extends Model
 {
 	protected static $base_url = 'https://image.tmdb.org/t/p';
 
-	protected $fillable = ['primary'];
+	protected $fillable = ['tv_show_id', 'primary', 'view', 'size', 'file_path'];
 
 	public function tvShow()
 	{
