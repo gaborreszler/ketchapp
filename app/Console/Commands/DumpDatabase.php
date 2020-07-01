@@ -37,14 +37,14 @@ class DumpDatabase extends Command
 
         $this->filename = strtolower(config('app.name')) . '_' . date('Y_m_d_His') . '.sql';
 
-        $this->process = new Process(sprintf(
-			'mysqldump -u%s -p%s %s %s > %s',
-			config('database.connections.mysql.username'),
-			config('database.connections.mysql.password'),
+        $this->process = new Process([
+			'mysqldump',
+			sprintf("--user=%s", config('database.connections.mysql.username')),
+			sprintf("--password=%s", config('database.connections.mysql.password')),
 			config('database.connections.mysql.database'),
-			"--ignore-table=".config('database.connections.mysql.database').".failed_jobs",
-			storage_path('app/' . $this->filename)
-		));
+			sprintf("--ignore-table=%s", config('database.connections.mysql.database').".failed_jobs"),
+			sprintf("--result-file=%s", storage_path('app/' . $this->filename))
+		]);
     }
 
     /**
