@@ -24,7 +24,15 @@ class Network extends Model
 		return $this->hasMany('App\NetworkImage');
     }
 
-	public function createNetworkImages($size = "original")
+	public function getImage()
+	{
+		if($image = $this->networkImages()->where('svg', true)->first())
+			return $image->getFilePublicPath(true);
+		elseif($image = $this->networkImages()->first())
+			return $image->getFilePublicPath();
+    }
+
+	public function createNetworkImages($size = NetworkImage::SIZE_ORIGINAL)
 	{
 		foreach ($this->getTmdbNetworkImages()->logos as $tmdbNetworkImage) {
 			$networkImage = new NetworkImage();

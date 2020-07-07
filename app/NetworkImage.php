@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 
 class NetworkImage extends Model
 {
+	const SIZE_ORIGINAL = 'original';
+
 	protected static $base_url = 'https://image.tmdb.org/t/p';
 
 	public function network()
@@ -14,7 +16,7 @@ class NetworkImage extends Model
 		return $this->belongsTo('App\Network');
     }
 
-	public function getExternalUrl($size = "original", $svg = false)
+	public function getExternalUrl($size = self::SIZE_ORIGINAL, $svg = false)
 	{
 		return self::$base_url . DIRECTORY_SEPARATOR . $size . (!$svg ? $this->file_path : $this->replaceExtension($this->file_path, 'svg'));
 	}
@@ -22,10 +24,10 @@ class NetworkImage extends Model
 	public function getFilePublicPath($svg = false)
 	{
 		$path = 'network-images' . DIRECTORY_SEPARATOR . $this->network->tmdb_identifier . DIRECTORY_SEPARATOR . $this->size;
-		return Storage::url($path.(!$svg?$this->file_path:$this->replaceExtension($this->file_path, 'svg')));
+		return $path . (!$svg ? $this->file_path : $this->replaceExtension($this->file_path, 'svg'));
 	}
 
-	public function storeFile($size = "original", $svg = false)
+	public function storeFile($size = self::SIZE_ORIGINAL, $svg = false)
 	{
 		$path = 'network-images'. DIRECTORY_SEPARATOR . $this->network->tmdb_identifier . DIRECTORY_SEPARATOR . $size;
 

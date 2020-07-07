@@ -3,29 +3,22 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class User extends Resource
+class Season extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\User::class;
-
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'name';
+    public static $model = \App\Season::class;
 
     /**
      * The columns that should be searched.
@@ -33,7 +26,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id',
     ];
 
     /**
@@ -47,34 +40,19 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Gravatar::make()->maxWidth(50),
+			BelongsTo::make('TV show', 'tvShow')->sortable(),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+			Number::make('Season', 'season_number')->sortable(),
 
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
-
-			Boolean::make('Daily reminders', 'reminded_daily')->sortable(),
-
-			Boolean::make('Weekly reminders', 'reminded_weekly')->sortable(),
-
-			Boolean::make('Monthly reminders', 'reminded_monthly')->sortable(),
+			Text::make('TMDb', function() {
+				return "<a class='no-underline dim text-primary font-bold' href='https://www.themoviedb.org/tv/{$this->tvShow->tmdb_identifier}/season/{$this->season_number}' target='_blank'>{$this->tmdb_identifier}</a>";
+			})->asHtml(),
 
 			DateTime::make('Created at')->sortable(),
 
 			DateTime::make('Updated at')->sortable(),
 
-			HasMany::make('TV show Users', 'tvShowUsers'),
+			HasMany::make('Episodes'),
         ];
     }
 
@@ -121,4 +99,24 @@ class User extends Resource
     {
         return [];
     }
+
+	/**
+	 * Get the value that should be displayed to represent the resource.
+	 *
+	 * @return string
+	 */
+	public function title()
+	{
+		return "{$this->seasonNumber()} [#{$this->id}]";
+	}
+
+	/**
+	 * Get the search result subtitle for the resource.
+	 *
+	 * @return string|null
+	 */
+	public function subtitle()
+	{
+		return "{$this->tvShow->title}";
+	}
 }

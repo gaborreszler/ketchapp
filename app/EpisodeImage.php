@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 
 class EpisodeImage extends Model
 {
+	const SIZE_ORIGINAL = 'original';
+
 	protected static $base_url = 'https://image.tmdb.org/t/p';
 
 	public function episode()
@@ -14,7 +16,7 @@ class EpisodeImage extends Model
 		return $this->belongsTo('App\Episode');
     }
 
-	public function getExternalUrl($size = "original")
+	public function getExternalUrl($size = self::SIZE_ORIGINAL)
 	{
 		return self::$base_url . DIRECTORY_SEPARATOR . $size . $this->file_path;
     }
@@ -22,10 +24,10 @@ class EpisodeImage extends Model
 	public function getFilePublicPath()
 	{
 		$path = 'episode-images' . DIRECTORY_SEPARATOR . $this->episode->season->tvShow->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->season->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->tmdb_identifier . DIRECTORY_SEPARATOR . $this->size;
-		return Storage::url($path.$this->file_path);
+		return $path . $this->file_path;
     }
 
-	public function storeFile($size = "original")
+	public function storeFile($size = self::SIZE_ORIGINAL)
 	{
 		$path = 'episode-images' . DIRECTORY_SEPARATOR . $this->episode->season->tvShow->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->season->tmdb_identifier . DIRECTORY_SEPARATOR . $this->episode->tmdb_identifier . DIRECTORY_SEPARATOR . $size;
 

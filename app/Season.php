@@ -28,6 +28,11 @@ class Season extends Model
 		return $this->hasMany('App\SeasonUser');
     }
 
+	public function seasonNumber()
+	{
+		return "S" . str_pad($this->season_number, 2, "0", STR_PAD_LEFT);
+	}
+
 	public function createSeasonUsers()
 	{
 		foreach ($this->tvShow->tvShowUsers as $tvShowUser) {

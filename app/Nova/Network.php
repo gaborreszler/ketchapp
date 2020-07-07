@@ -3,22 +3,22 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Avatar;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class User extends Resource
+class Network extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\User::class;
+    public static $model = \App\Network::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -33,7 +33,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+		'id', 'name'
     ];
 
     /**
@@ -47,34 +47,26 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Gravatar::make()->maxWidth(50),
+			Avatar::make('Image', function() {
+				return $this->getImage();
+			})->squared(),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255'),
+			Text::make('Name')
+				->sortable()
+				->rules('required', 'max:255'),
 
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
-
-			Boolean::make('Daily reminders', 'reminded_daily')->sortable(),
-
-			Boolean::make('Weekly reminders', 'reminded_weekly')->sortable(),
-
-			Boolean::make('Monthly reminders', 'reminded_monthly')->sortable(),
+			Text::make('TMDb', function() {
+				$tmdb_identifier = $this->tmdb_identifier;
+				return "<a class='no-underline dim text-primary font-bold' href='https://www.themoviedb.org/network/{$tmdb_identifier}' target='_blank'>{$tmdb_identifier}</a>";
+			})->asHtml(),
 
 			DateTime::make('Created at')->sortable(),
 
 			DateTime::make('Updated at')->sortable(),
 
-			HasMany::make('TV show Users', 'tvShowUsers'),
+			BelongsToMany::make('TV shows', 'tvShows'),
+
+			HasMany::make('Network images', 'networkImages')
         ];
     }
 

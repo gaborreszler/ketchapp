@@ -78,7 +78,22 @@ class TvShow extends Model
 		return self::STATUS_RELATIONS[$this->status];
 	}
 
-	public function createTvShowImage($file_path, $view, $primary = false, $swap_primary = null, $size = "original")
+	public function getPortraitImage() {
+		if ($image = $this->tvShowImages()->where(['view' => TvShowImage::VIEW_PORTRAIT, 'primary' => true])->first())
+			return $image->getFilePublicPath();
+		elseif($image = $this->tvShowImages()->where('view', TvShowImage::VIEW_PORTRAIT)->first())
+			return $image->getFilePublicPath();
+	}
+
+	public function getLandscapeImage()
+	{
+		if ($image = $this->tvShowImages()->where(['view' => TvShowImage::VIEW_LANDSCAPE, 'primary' => true])->first())
+			return $image->getFilePublicPath();
+		elseif($image = $this->tvShowImages()->where('view', TvShowImage::VIEW_LANDSCAPE)->first())
+			return $image->getFilePublicPath();
+	}
+
+	public function createTvShowImage($file_path, $view, $primary = false, $swap_primary = null, $size = TvShowImage::SIZE_ORIGINAL)
 	{
 		if ($primary && $swap_primary) {
 			$swap_primary->primary = 0;

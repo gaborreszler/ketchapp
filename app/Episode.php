@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Episode extends Model
 {
+	protected $casts = [
+		'air_date' => 'date'
+	];
+
 	public function season()
 	{
 		return $this->belongsTo('App\Season');
@@ -28,8 +32,20 @@ class Episode extends Model
 		return $this->hasMany('App\EpisodeImage');
     }
 
+	public function seasonNumberEpisodeNumber()
+	{
+		return "S" . str_pad($this->season->season_number, 2, "0", STR_PAD_LEFT) . "E" . str_pad($this->episode_number, 2, "0", STR_PAD_LEFT);
+    }
 
-	public function createEpisodeImage($file_path, $primary = false, $swap_primary = null, $size = "original")
+	public function getImage()
+	{
+		if($image = $this->episodeImages()->where('primary', true)->first())
+			return $image->getFilePublicPath();
+		elseif($image = $this->episodeImages()->first())
+			return $image->getFilePublicPath();
+    }
+
+	public function createEpisodeImage($file_path, $primary = false, $swap_primary = null, $size = EpisodeImage::SIZE_ORIGINAL)
 	{
 		$episodeImage = new EpisodeImage();
 		$episodeImage->episode_id = $this->id;
