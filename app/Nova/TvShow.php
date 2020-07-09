@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Metrics\TvShowsByStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
@@ -87,7 +88,9 @@ class TvShow extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+        	TvShowsByStatus::make()->width('1/4')
+		];
     }
 
     /**
