@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Filters\TvShowStatus;
 use App\Nova\Metrics\TvShowsByStatus;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Avatar;
@@ -101,7 +102,9 @@ class TvShow extends Resource
      */
     public function filters(Request $request)
     {
-        return [];
+        return [
+			new TvShowStatus
+		];
     }
 
     /**
