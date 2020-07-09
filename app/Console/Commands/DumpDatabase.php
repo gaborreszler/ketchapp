@@ -43,6 +43,9 @@ class DumpDatabase extends Command
 			sprintf("--password=%s", config('database.connections.mysql.password')),
 			config('database.connections.mysql.database'),
 			sprintf("--ignore-table=%s", config('database.connections.mysql.database').".failed_jobs"),
+			sprintf("--ignore-table=%s", config('database.connections.mysql.database').".telescope_entries"),
+			sprintf("--ignore-table=%s", config('database.connections.mysql.database').".telescope_entries_tags"),
+			sprintf("--ignore-table=%s", config('database.connections.mysql.database').".telescope_monitoring"),
 			sprintf("--result-file=%s", storage_path('app/' . $this->filename))
 		]);
     }
